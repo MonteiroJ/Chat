@@ -10,7 +10,7 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-io.sockets.on('connection', function (socket, pseudo) {
+io.on('connection', function (socket, pseudo) {
     // Dès qu'on nous donne un pseudo, on le stocke en variable de session et on informe les autres personnes
     socket.on('nouveau_client', function(pseudo) {
         console.log('nouveau client')
@@ -28,7 +28,7 @@ io.sockets.on('connection', function (socket, pseudo) {
 
     // Dès que l'utilisateur se déconnecte, on prévient les autres utilisateurs
     socket.on('disconnect', function(){
-        
+
         console.log(socket.pseudo + ' disconnected');
         socket.broadcast.emit('deconnexion_client', socket.pseudo);
       });
