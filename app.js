@@ -3,7 +3,7 @@ var app = require('express')(),
     io = require('socket.io').listen(server),
     ent = require('ent'), // Permet de bloquer les caractères HTML (sécurité équivalente à htmlentities en PHP)
     fs = require('fs');
-    const PORT = process.env.PORT || 5000
+    const PORT = process.env.PORT || 8080
 
 // Chargement de la page index.html
 app.get('/', function (req, res) {
@@ -30,5 +30,5 @@ io.sockets.on('connection', function (socket, pseudo) {
         socket.broadcast.emit('deconnexion_client', socket.pseudo);
       });
 });
-
-server.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+console.log(`Listening on ${ PORT }`);
+server.listen(PORT);
