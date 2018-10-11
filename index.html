@@ -2,11 +2,6 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
         <title>Super Chat temps réel !</title>
         <style>
            .pseudo {
@@ -15,43 +10,41 @@
                 padding: 5px;
                 margin-right: 5px;
             }
+            .disconnect {
+                background: #dc3545;
+            }
+            .connect {
+                background: #28a745;
+            }
+            .own-message {
+                background: #17a2b8;
+            }
+            p {
+                padding: 7px;
+            }
         </style>
     </head>
  
     <body>
-        <div class="container">
-		<h1>Le super Chat temps réel !</h1>
-		<div class="row">
-			<form action="/" method="post" id="formulaire_chat" class="col s12">
-				<div class="row">
-					<div class="input-field col s10">
-						<i class="material-icons prefix">textsms</i>
-						<input type="text" class="validate" name="message" id="message" placeholder="Votre message..." size="50" autofocus="">
-					</div>
-					<div class="input-field col s2">
-						<button class="btn waves-effect waves-light" type="submit" id="envoi_message">
-							Envoyer
-							<i class="material-icons right">send</i>
-						</button>
-						<!--<input type="submit" id="envoi_message" value="Envoyer" />-->
-					</div>
-				</div>
-			</form>
-		</div>
+        <h1>Le super Chat temps réel !</h1>
 
-		<section id="zone_chat">
+        <form action="/" method="post" id="formulaire_chat">
+            <input type="text" name="message" id="message" placeholder="Votre message..." size="50" autofocus />
+            <input type="submit" id="envoi_message" value="Envoyer" />
+        </form>
 
-		</section>
-	</div>
+        <section id="zone_chat">
+            
+        </section>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
         <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
         <script>
 
             // Connexion à socket.io
             // Changer l'url pour votre url ou sera votre chat
-            var socket = io.connect('https://example.com/');
+            var socket = io.connect('https://super-kadom-chat.herokuapp.com/');
 
             // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
             var pseudo = prompt('Quel est votre pseudo ?');
@@ -65,12 +58,12 @@
 
             // Quand un nouveau client se connecte, on affiche l'information
             socket.on('nouveau_client', function(pseudo) {
-                $('#zone_chat').prepend('<div class="card teal lighten-2"><div class="card-content"><em>' + pseudo + ' a rejoint le Chat !</em></div></div>');
+                $('#zone_chat').prepend('<p class="connect"><em>' + pseudo + ' a rejoint le Chat !</em></p>');
             })
 
             // Quand un client se déconnecte, on affiche l'information
             socket.on('deconnexion_client', function(pseudo) {
-                $('#zone_chat').prepend('<div class="card red lighten-2"><div class="card-content"><em>' + pseudo + ' a quitté le Chat !</em></div></div>');
+                $('#zone_chat').prepend('<p class="disconnect"><em>' + pseudo + ' a quitté le Chat !</em></p>');
             })
 
             // Lorsqu'on envoie le formulaire, on transmet le message et on l'affiche sur la page
